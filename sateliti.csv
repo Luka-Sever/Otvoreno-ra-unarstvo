@@ -1,0 +1,11 @@
+ime satelita,drzava porijekla,drzava odrzavanja,vlasnik,korist,svrha,orbita,apside.perigej,apside.apogej,inklinacija,period
+Kepler-11 DANEEL,NR (5/21),Kanada,Kepler Communications,Komercijalna,Komunikacija,LEO,525,535,97.7,95.2
+AprizeSat 4,SAD,SAD/Argentina,"Aprize Satelliti, Argentina",Komercijalna,Komunikacija/Pomorsko praćenje,LEO,604,674,98.1,97.5
+Ladybird 2,NR,China,Beijing Commsat Technology Development Co. Ltd.,Komercijalna,Unaprjeđivanje tehnologije,LEO,530,549,97.6,95.4
+Lemur-2 AC-Cubed ,NR (9/21),SAD,Spire Global Inc.,Komercijalna,Obzervacija Zemlje,LEO,512,533,97.5,95.2
+USA 262,SAD,SAD,DoD/US Air Force,Vojna/Komercijalna,Navigacija/Globalna navigacija,MEO,20446,20459,54.9,728.96
+Mercury 3,SAD,SAD,National Reconnaissance Office (NRO)/US Air Force,Vojna,Obzervacija Zemlje,GEO,35500,35500,7,1436
+RISat-2B,Indija,Indija,Ministry of Defense,Vojna,Obzervacija Zemlje,LEO,550,557,37,96
+Beidou DW 33,Kina,Kina,Chinese Ministry of National Defense,Vojna/Vladina,Navigacija/Globalna navigacija,MEO,21509,21545,55,773.2
+PVSAT,NR (9/21),Južna Koreja,Korean Aerospace Research Institute (KARI),Vladina,Technology Demonstration,LEO,695,704,98.1,100
+Meteosat 9,EUMETSAT,Multinacionalna,EUMETSAT (European Organization for the Exploitation of Meteorological Satellites),Vladina/Civili,Obzervacija Zemlje,GEO,35775,35795,0.29,1436
