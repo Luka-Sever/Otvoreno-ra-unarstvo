@@ -1,0 +1,56 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Generated schema for Root",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "properties": {
+      "ime satelita": {
+        "type": "string"
+      },
+      "drzava porijekla": {
+        "type": "string"
+      },
+      "drzava odrzavanja": {
+        "type": "string"
+      },
+      "vlasnik": {
+        "type": "string"
+      },
+      "korist": {
+        "type": "string"
+      },
+      "orbita": {
+        "type": "string"
+      },
+      "inklinacija": {
+        "type": "number"
+      },
+      "period": {
+        "type": "number"
+      },
+      "svrha": {
+        "type": "string"
+      },
+      "perigej": {
+        "type": "number"
+      },
+      "apogej": {
+        "type": "number"
+      }
+    },
+    "required": [
+      "ime satelita",
+      "drzava porijekla",
+      "drzava odrzavanja",
+      "vlasnik",
+      "korist",
+      "orbita",
+      "inklinacija",
+      "period",
+      "svrha",
+      "perigej",
+      "apogej"
+    ]
+  }
+}
