@@ -1,0 +1,97 @@
+{
+    "openapi" : "3.2.0",
+    "info" : {
+        "title" : "API za imena satelita",
+        "version" : "1.0"
+    },
+    "paths" : {
+        "/pretrazi" : {
+            "get" : {
+                "summary" : "Vraća podatke pretraživanja.",
+                "description" : "Vraća tražene podatke iz baze s mogućnostima filtriranja.",
+                "responses" : {
+                    "200" : {
+                        "description" : "OK",
+                        "content" : {
+                            "application/json" : {
+                                "schema" : {
+                                    "type" : "array"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/sviSateliti" : {
+            "summary" : "Vraća podatke pretraživanja.",
+            "description" : "Vraća tražene podatke iz baze s mogućnostima filtriranja.",
+            "responses" : {
+                "200" : {
+                    "description" : "OK",
+                    "content" : {
+                        "application/json" : {
+
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components" : {
+        "parameters" : {
+            "satelitParam" : {
+                "description" : "Podaci opisa satelita.",
+                "name" : "satelit",
+                "in" : "path",
+                "required" : "true",
+                "schema" : {
+                    "type" : "object",
+                    "properties" : {
+                        "ime satelita" : {
+                            "type" : "string",
+                            "description" : "Ime satelita"
+                        },
+                        "drzava odrzavanja" : {
+                            "type" : "string",
+                            "description" : "Država koja održava satelit"
+                        },
+                        "vlasnik" : {
+                            "type" : "string",
+                            "description" : "Trenutni vlasnik satelita"
+                        },
+                        "korist" : {
+                            "type" : "string",
+                            "description" : "Tko ima korist od satelita"
+                        },
+                        "svrha" : {
+                            "type" : "string",
+                            "description" : "Koja je svrha satelita"
+                        },
+                        "orbita" : {
+                            "type" : "string",
+                            "description" : "U kojoj orbiti se nalazi",
+                            "enum" : ["LEO", "MEO", "GEO"]
+                        },
+                        "perigej" : {
+                            "type" : "number",
+                            "description" : "Perigej je najbliža udaljenost od Zemlje (u km)"
+                        },
+                        "apogej" : {
+                            "type" : "number",
+                            "description" : "Apogej je najdalja udaljenost od Zemlje (u km)."
+                        },
+                        "inklinacija" : {
+                            "type" : "number",
+                            "description" : "Daje inklinaciju, kut između ravnine gibanja satelita i ekliptike Zemlje (u stupnjevima)."
+                        },
+                        "period" : {
+                            "type" : "number",
+                            "description" : "Koliko dugo vremena treba da napravi krug oko Zemlje (u minutama)."
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
