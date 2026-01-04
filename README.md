@@ -4,12 +4,12 @@ Ovdje se nalazi popis nekih od satelita koji kruže Zemljom. Podaci su prikazani
 | Skup otvorenih podataka | Popis nekih satelita koji kruže Zemljom |
 |---|---|
 | Autor | Luka Sever |
-| Verzija | 1.0 |
+| Verzija | 3.0 |
 | Licencija | [CC BY-SA 3.0 HR](https://creativecommons.org/licenses/by-sa/3.0/hr/deed.hr)|
 | Jezik | Hrvatski, engleski |
 | Ključne riječi | sateliti,zemlja,orbita|
-| Broj satelita u bazi | 10 |
-| Zadnja izmjena | 26.10.2025.|
+| Broj satelita u bazi | 13 |
+| Zadnja izmjena | 4.1.2026.|
 
 # Opis atributa
 | Atribut | Značenje |
