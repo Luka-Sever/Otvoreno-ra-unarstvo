@@ -116,14 +116,14 @@ app.get("/meo", async (req, res) => {
   res.status(200).send(response);
 });
 
-app.get("/satellites/api/v1/:sateliteId" ,async (req, res) => {
-  const sateliteId = req.params.sateliteId;
+app.get("/satellites/api/v1/:satelliteId" ,async (req, res) => {
+  const satelliteId = req.params.satelliteId;
   try {
-    const response = await Sateliti.findOne({ "_id" : sateliteId}).lean();
+    const response = await Sateliti.findOne({ "_id" : satelliteId}).lean();
     if (!response) {
       return res.status(404).json({
         error: "Satelit nije pronađen",
-        querry: sateliteId
+        querry: satelliteId
       });
     }
     
@@ -186,7 +186,7 @@ app.post("/satellite/api/v1", async (req, res) => {
     }
 });
 
-app.put("/satellite/api/v1", async (req, res) => {
+app.put("/satellite/api/v1/:satelliteId", async (req, res) => {
   try {
     const {
       "ime satelita": imeSatelita,
@@ -214,7 +214,8 @@ app.put("/satellite/api/v1", async (req, res) => {
       "perigej" : perigej,
       "apogej" : apogej
     }
-    const response = await Sateliti.exists(satelitZaPromjenu); 
+    const satelliteId = req.params.satelliteId;
+    const response = await Sateliti.findOne({ "_id" : satelliteId}).lean();
     if (!response)
       return res.status(404).json( { error: "Ne postoji objekt u bazi!"});
     await Sateliti.findOneAndUpdate(satelitZaPromjenu);
@@ -224,7 +225,7 @@ app.put("/satellite/api/v1", async (req, res) => {
   }
 });
 
-app.delete("/satellite/api/v1", async (req, res) => {
+app.delete("/satellite/api/v1/:satelliteId", async (req, res) => {
   try {
     const {
       "ime satelita": imeSatelita,
@@ -252,7 +253,9 @@ app.delete("/satellite/api/v1", async (req, res) => {
       "perigej" : perigej,
       "apogej" : apogej
     }
-    if (!await Sateliti.exists(satelitZaBrisanje))
+    const satelliteId = req.params.satelliteId;
+    const response = await Sateliti.findOne({ "_id" : satelliteId}).lean();
+    if (!response)
       return res.status(500).json( { error: "Ne postoji objekt u bazi!"});
     await Sateliti.findOneAndDelete(satelitZaBrisanje);
     res.status(200).json({ message : "Satelit izbrisan!"});
@@ -261,6 +264,10 @@ app.delete("/satellite/api/v1", async (req, res) => {
   }
 
 });
+
+app.use((req, res) => {
+  res.status(404).json({ error: "Ova stranica ne postoji."});
+})
 
 app.listen(3000, () => {
   console.log("Running on port 3000");

@@ -68,7 +68,7 @@
               "application/json": {
                 "schema": { "$ref": "#/components/schemas/ErrorResponse" },
                 "examples": {
-                  "internal": { "value": { "error": "Internal server error" } }
+                  "internal": { "value": { "error": "Greška na serveru" } }
                 }
               }
             }
@@ -195,7 +195,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Traženi satelit",
+            "description": "Pronađen traženi satelit",
             "content": {
               "application/json": {
                 "schema": { "$ref": "#/components/schemas/Satellite" }
