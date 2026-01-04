@@ -1,97 +1,502 @@
 {
-    "openapi" : "3.2.0",
-    "info" : {
-        "title" : "API za imena satelita",
-        "version" : "1.0"
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Sateliti API",
+    "version": "1.0.0",
+    "description": "REST API za kolekciju satelita. Omogućuje pregledavanje, kreiranje, uređivanje, dodavanje i brisanje satelita iz baze.",
+    "licence" : {
+      "name" :"CC BY-SA 3.0 HR",
+      "url" : "https://creativecommons.org/licenses/by-sa/3.0/hr/deed.hr"
     },
-    "paths" : {
-        "/pretrazi" : {
-            "get" : {
-                "summary" : "Vraća podatke pretraživanja.",
-                "description" : "Vraća tražene podatke iz baze s mogućnostima filtriranja.",
-                "responses" : {
-                    "200" : {
-                        "description" : "OK",
-                        "content" : {
-                            "application/json" : {
-                                "schema" : {
-                                    "type" : "array"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/sviSateliti" : {
-            "summary" : "Vraća podatke pretraživanja.",
-            "description" : "Vraća tražene podatke iz baze s mogućnostima filtriranja.",
-            "responses" : {
-                "200" : {
-                    "description" : "OK",
-                    "content" : {
-                        "application/json" : {
-
-                        }
-                    }
-                }
-            }
-        }
-    },
-    "components" : {
-        "parameters" : {
-            "satelitParam" : {
-                "description" : "Podaci opisa satelita.",
-                "name" : "satelit",
-                "in" : "path",
-                "required" : "true",
-                "schema" : {
-                    "type" : "object",
-                    "properties" : {
-                        "ime satelita" : {
-                            "type" : "string",
-                            "description" : "Ime satelita"
-                        },
-                        "drzava odrzavanja" : {
-                            "type" : "string",
-                            "description" : "Država koja održava satelit"
-                        },
-                        "vlasnik" : {
-                            "type" : "string",
-                            "description" : "Trenutni vlasnik satelita"
-                        },
-                        "korist" : {
-                            "type" : "string",
-                            "description" : "Tko ima korist od satelita"
-                        },
-                        "svrha" : {
-                            "type" : "string",
-                            "description" : "Koja je svrha satelita"
-                        },
-                        "orbita" : {
-                            "type" : "string",
-                            "description" : "U kojoj orbiti se nalazi",
-                            "enum" : ["LEO", "MEO", "GEO"]
-                        },
-                        "perigej" : {
-                            "type" : "number",
-                            "description" : "Perigej je najbliža udaljenost od Zemlje (u km)"
-                        },
-                        "apogej" : {
-                            "type" : "number",
-                            "description" : "Apogej je najdalja udaljenost od Zemlje (u km)."
-                        },
-                        "inklinacija" : {
-                            "type" : "number",
-                            "description" : "Daje inklinaciju, kut između ravnine gibanja satelita i ekliptike Zemlje (u stupnjevima)."
-                        },
-                        "period" : {
-                            "type" : "number",
-                            "description" : "Koliko dugo vremena treba da napravi krug oko Zemlje (u minutama)."
-                        }
-                    }
-                }
-            }
-        }
+    "contact": {
+      "name": "Luka Sever",
+      "email": "luka.sever20@gmail.com",
+      "url": "https://github.com/Luka-Sever/Otvoreno-ra-unarstvo/tree/main#"
     }
+  },
+  "tags": [
+    { "name": "DataTables", "description": "Dobivanje filtriranih podataka preko tražilice" },
+    { "name": "Satellites", "description": "CRUD nad satelitima" }
+  ],
+  "paths": {
+    "/search": {
+      "get": {
+        "tags": ["DataTables"],
+        "summary": "Dohvaćanje podataka pretrage",
+        "description": "Vraća satelite filtrirane prema pretraživanju na web stranici",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/customSearchColumn"
+          },
+          {
+            "$ref": "#/components/parameters/customSearchValue"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista filtriranih satelita",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/DataTablesResponse" },
+                "examples": {
+                  "example": {
+                    "value": {
+                      "data": [
+                        {
+                          "ime satelita": "TestSat-1",
+                          "drzava porijekla": "SAD",
+                          "drzava odrzavanja": "SAD",
+                          "vlasnik": "NASA",
+                          "korist": "Znanstvena",
+                          "orbita": "LEO",
+                          "inklinacija": 51.6,
+                          "period": 92,
+                          "svrha": "Promatranje Zemlje",
+                          "perigej": 400,
+                          "apogej": 420
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Greška na serveru",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" },
+                "examples": {
+                  "internal": { "value": { "error": "Internal server error" } }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/allSatellites": {
+      "get": {
+        "tags": ["Satellites"],
+        "summary": "Dohvati sve satelite",
+        "description": "Vraća cijelu kolekciju satelita",
+        "responses": {
+          "200": {
+            "description": "Lista svih satelita",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/Satellite" }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Greška na serveru",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } }
+            }
+          }
+        }
+      }
+    },
+    "/americans": {
+      "get": {
+        "tags": ["Satellites"],
+        "summary": "Svi američki sateliti",
+        "description": "Vraća sve satelite koji su američkog podrijetla",
+        "responses": {
+          "200": {
+            "description": "Lista američkih satelita",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/Satellite" }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Greška na serveru",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } }
+            }
+          }
+        }
+      }
+    },
+    "/leo": {
+      "get": {
+        "tags": ["Satellites"],
+        "summary": "Svi sateliti u LEO orbiti",
+        "description": "Vraća sve satelite u niskoj orbiti (LEO)",
+        "responses": {
+          "200": {
+            "description": "Lista satelita s niskom orbitom",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/Satellite" }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Greška na serveru",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } }
+            }
+          }
+        }
+      }
+    },
+    "/meo": {
+      "get": {
+        "tags": ["Satellites"],
+        "summary": "Svi sateliti u MEO orbiti",
+        "description": "Vraća satelite u srednjoj orbiti (MEO)",
+        "responses": {
+          "200": {
+            "description": "Lista satelita",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/Satellite" }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Greška na serveru",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } }
+            }
+          }
+        }
+      }
+    },
+    "/satellites/{sateliteId}": {
+      "get": {
+        "tags": ["Satellites"],
+        "summary": "Dohvati satelit po ID-ju u bazi",
+        "parameters": [
+          {
+            "name": "sateliteId",
+            "in": "path",
+            "required": true,
+            "description": "MongoDB ObjectId satelita",
+            "schema": { "$ref": "#/components/schemas/ObjectId" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Traženi satelit",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Satellite" }
+              }
+            }
+          },
+          "404": {
+            "description": "Satelit nije pronađen",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/NotFoundResponse" }
+              }
+            }
+          },
+          "500": {
+            "description": "Greška u bazi",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" },
+                "examples": {
+                  "db": { "value": { "error": "Greška u bazi" } }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/satellite": {
+      "post": {
+        "tags": ["Satellites"],
+        "summary": "Dodaj novi satelit",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/Satellite" },
+              "examples": {
+                "example": {
+                  "value": {
+                    "ime satelita": "TestSat-1",
+                    "drzava porijekla": "SAD",
+                    "drzava odrzavanja": "SAD",
+                    "vlasnik": "NASA",
+                    "korist": "Znanstvena",
+                    "orbita": "LEO",
+                    "inklinacija": 51.6,
+                    "period": 92,
+                    "svrha": "Promatranje Zemlje",
+                    "perigej": 400,
+                    "apogej": 420
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Satelit uspješno kreiran",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Satellite" }
+              }
+            }
+          },
+          "400": {
+            "description": "Nedostaju obavezna polja",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" },
+                "examples": {
+                  "missing": { "value": { "error": "Nedostaju podaci o satelitu!" } }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Greška pri spremanju",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" },
+                "examples": {
+                  "save": { "value": { "error": "Greška tokom spremanaj u bazu" } }
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": ["Satellites"],
+        "summary": "Osvježi vrijednost satelita",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/Satellite" },
+              "examples": {
+                "example": {
+                  "value": {
+                    "ime satelita": "TestSat-1",
+                    "drzava porijekla": "SAD",
+                    "drzava odrzavanja": "SAD",
+                    "vlasnik": "NASA",
+                    "korist": "Znanstvena",
+                    "orbita": "LEO",
+                    "inklinacija": 51.6,
+                    "period": 92,
+                    "svrha": "Promatranje Zemlje",
+                    "perigej": 400,
+                    "apogej": 420
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Satelit uspješno osvježen",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Satellite" }
+              }
+            }
+          },
+          "404": {
+            "description": "Satelit nije u bazi",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" },
+                "examples": {
+                  "missing": { "value": { "error": "Satelit nije u bazi" } }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Greška pri spremanju",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" },
+                "examples": {
+                  "save": { "value": { "error": "Greška tokom spremanaj u bazu" } }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Satellites"],
+        "summary": "Obriši satelit",
+        "description": "Briše satelit po traženim parametrima",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/Satellite" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Satelit izbrisan",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": { "type": "string" }
+                  },
+                  "required": ["message"],
+                  "example": { "message": "Satelit izbrisan!" }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Satelit ne postoji u bazi",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" },
+                "examples": {
+                  "notExists": { "value": { "error": "Satelit ne postoji u bazi" } },
+                  "db": { "value": { "error": "Greška u komunikaciji s bazom" } }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "parameters": {
+      "customSearchColumn": {
+        "name": "customSearchColumn",
+        "in": "query",
+        "required": false,
+        "description": "Stupac koji se filtrira",
+        "schema": {
+          "type": "string",
+          "enum": [
+            "all",
+            "ime satelita",
+            "drzava porijekla",
+            "drzava odrzavanja",
+            "vlasnik",
+            "korist",
+            "svrha",
+            "orbita",
+            "perigej",
+            "apogej",
+            "inklinacija",
+            "period"
+          ],
+          "default": "all"
+        }
+      },
+      "customSearchValue": {
+        "name": "customSearchValue",
+        "in": "query",
+        "required": false,
+        "description": "Vrijednost po kojoj se traži satelit",
+        "schema": { "type": "string", "default": "" },
+        "example": "SAD"
+      }
+    },
+    "schemas": {
+      "ObjectId": {
+        "type": "string",
+        "description": "Id satelita u MongoDB bazi",
+        "pattern": "^[a-fA-F0-9]{24}$",
+        "example": "64b7f1e2c2a7b1c1d2e3f4a5"
+      },
+      "Satellite": {
+        "type": "object",
+        "description" : "Objekt Satelit",
+        "properties": {
+          "_id" : { "type" : "string" } ,
+          "ime satelita": { "type": "string" },
+          "drzava porijekla": { "type": "string" },
+          "drzava odrzavanja": { "type": "string" },
+          "vlasnik": { "type": "string" },
+          "korist": { "type": "string" },
+          "orbita": { "type": "string" },
+          "inklinacija": { "type": "number" },
+          "period": { "type": "number" },
+          "svrha": { "type": "string" },
+          "perigej": { "type": "number" },
+          "apogej": { "type": "number" }
+        },
+        "required": [
+          "_id",
+          "ime satelita",
+          "drzava porijekla",
+          "drzava odrzavanja",
+          "vlasnik",
+          "korist",
+          "orbita",
+          "inklinacija",
+          "period",
+          "svrha",
+          "perigej",
+          "apogej"
+        ],
+        "additionalProperties": false
+      },
+      "DataTablesResponse": {
+        "type": "object",
+        "description": "Odgovor baze podataka na filtrirano pretraživanje, vraća JSON podataka za prikazivanje na stranici.",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/Satellite" }
+          }
+        },
+        "required": ["data"],
+        "additionalProperties": false
+      },
+      "ErrorResponse": {
+        "type": "object",
+        "description" : "Vraća grešku servera",
+        "properties": {
+          "error": { "type": "string" }
+        },
+        "required": ["error"],
+        "additionalProperties": false
+      },
+      "NotFoundResponse": {
+        "type": "object",
+        "description" : "Vraća grešku jer nije pronašao satelit u bazi",
+        "properties": {
+          "error": { "type": "string" },
+          "querry": { "type": "string" }
+        },
+        "required": ["error", "querry"],
+        "additionalProperties": false
+      }
+    }
+  }
 }
