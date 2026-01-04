@@ -180,7 +180,7 @@
         }
       }
     },
-    "/satellites/{sateliteId}": {
+    "/satellites/api/v1{sateliteId}": {
       "get": {
         "tags": ["Satellites"],
         "summary": "Dohvati satelit po ID-ju u bazi",
@@ -224,7 +224,7 @@
         }
       }
     },
-    "/satellite": {
+    "/satellite/api/v1": {
       "post": {
         "tags": ["Satellites"],
         "summary": "Dodaj novi satelit",

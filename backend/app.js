@@ -116,7 +116,7 @@ app.get("/meo", async (req, res) => {
   res.status(200).send(response);
 });
 
-app.get("/satellites/:sateliteId" ,async (req, res) => {
+app.get("/satellites/api/v1/:sateliteId" ,async (req, res) => {
   const sateliteId = req.params.sateliteId;
   try {
     const response = await Sateliti.findOne({ "_id" : sateliteId}).lean();
@@ -135,7 +135,7 @@ app.get("/satellites/:sateliteId" ,async (req, res) => {
   }
 });
 
-app.post("/satellite", async (req, res) => {
+app.post("/satellite/api/v1", async (req, res) => {
   try {
     const {
       "ime satelita": imeSatelita,
@@ -186,7 +186,7 @@ app.post("/satellite", async (req, res) => {
     }
 });
 
-app.put("/satellite", async (req, res) => {
+app.put("/satellite/api/v1", async (req, res) => {
   try {
     const {
       "ime satelita": imeSatelita,
@@ -201,7 +201,6 @@ app.put("/satellite", async (req, res) => {
       perigej,
       apogej
     } = req.body;
-    console.log("Je li se što ispisuje?");
     const satelitZaPromjenu = {
       "ime satelita": imeSatelita,
       "drzava porijekla": drzavaPorijekla,
@@ -225,7 +224,7 @@ app.put("/satellite", async (req, res) => {
   }
 });
 
-app.delete("/satellite", async (req, res) => {
+app.delete("/satellite/api/v1", async (req, res) => {
   try {
     const {
       "ime satelita": imeSatelita,
