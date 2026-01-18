@@ -2,16 +2,18 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import DataTable from 'datatables.net-react';
 import DT from 'datatables.net-dt';
 import Papa from "papaparse"
+import JsonLd from './JsonLd';
 
 DataTable.use(DT);
 
-export default function Datatable() {
+export default function Datatable({ isAuthenticated }) {
     const table = useRef();
     const [tableInstance, setTableInstance] = useState(null);
     const downloadLinkJson = useRef();
     const downloadLinkCsv = useRef();
     const [searchColumn, setSearchColumn] = useState("all");
     const searchColumnRef = useRef(searchColumn)
+    const [allSatellites, setAllSatellites] = useState();
     
     const columns = [
         'Ime satelita',
@@ -35,7 +37,14 @@ export default function Datatable() {
 
     useEffect(() => {
         searchColumnRef.current = searchColumn;
-    }, [searchColumn])
+    }, [searchColumn]);
+
+    useEffect(() => {
+        fetch("http://localhost:3000/allSatellites")
+            .then(r => r.json())
+            .then(setAllSatellites)
+            .catch(console.error);
+    }, []);
 
     useEffect(() => {
         if (!table.current) return;
@@ -81,7 +90,8 @@ export default function Datatable() {
 
         const updateDownloadLinks = () => {
             const filteredData = dt.rows({ search: "applied" }).data().toArray();
-
+            
+            
             // pretvori array od arraya u array s objektima
             const transform = (data) =>
                 data.map(row => {
@@ -91,7 +101,6 @@ export default function Datatable() {
                     });
                     return obj;
                 });
-
 
             // fora operator, ako je current undefined i čitamo property href
             // dobit ćemo error da ne možemo čitati udnefined
@@ -125,7 +134,9 @@ export default function Datatable() {
 
 
     return (
+        isAuthenticated ?
         <>
+            <JsonLd satellites={allSatellites}></JsonLd>
             <br />
             <label htmlFor='filter'>Traži po atributu: </label>
             <select id="filter" 
@@ -161,5 +172,7 @@ export default function Datatable() {
             <a ref={downloadLinkJson} >Podaci u JSON formatu</a><br />
             <a ref={downloadLinkCsv} >Podaci u CSV formatu</a>
         </>
+        :
+        <h2>Nemate pravo pristupa podacima!</h2>
     );
 }

@@ -1,3 +1,4 @@
+require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
@@ -6,7 +7,7 @@ const app = express();
 app.use(cors());
 app.use(express.json())
 
-const uri = "mongodb+srv://lukasever20_db_user:CmEFXS26TulwSuTC@cluster0.xotdmaq.mongodb.net/satelitiDB?appName=Cluster0";
+const uri = process.env.MONGO_URI;
 
 mongoose.connect(uri).then(res => {
   console.log("Connected to database");
@@ -27,6 +28,10 @@ const schema = new mongoose.Schema({
 });
 
 const Sateliti = mongoose.model("Sateliti", schema, "sateliti");
+
+const response = {
+  
+};
 
 // pomoćna funkcija vraća objekt filtriran sa stranice
 function buildFilter(customSearchColumn, customSearchValue) {

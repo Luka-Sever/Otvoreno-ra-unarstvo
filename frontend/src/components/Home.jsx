@@ -1,4 +1,5 @@
 
+// TODO: dodati parametar je ulogiran radi lakšeg praćenja
 export default function Home() {
     return (
         <>
@@ -20,7 +21,7 @@ export default function Home() {
           </tr>
           <tr>
             <td>Verzija</td>
-            <td>2.0</td>
+            <td>4.0</td>
           </tr>
           <tr>
             <td>Jezik</td>
@@ -28,11 +29,11 @@ export default function Home() {
           </tr>
           <tr>
             <td>Broj satelita u bazi</td>
-            <td>10</td>
+            <td>13</td>
           </tr>
           <tr>
             <td>Zadnja izmjena</td>
-            <td>8.11.2025</td>
+            <td>12.1.2026</td>
           </tr>        
         </tbody>
       </table>
